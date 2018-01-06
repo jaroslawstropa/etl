@@ -118,8 +118,17 @@ app.post('/extract', function(req, res){
 
 app.post('/transform', function(req, res){
     var product_id = req.param('id');
+    var content;
 
-    var content = fs.readFileSync(product_id+'.html');
+    try {
+        content = fs.readFileSync(product_id+'.html');;
+    }
+    catch (err) {
+        res.status(400);
+        res.send('You must first call the service Extract');
+        console.error( err )
+    }
+
 
     var $ = cheerio.load(content);
 
@@ -186,8 +195,17 @@ app.post('/transform', function(req, res){
 
 app.post('/load', function(req, res){
     var product_id = req.param('id');
+    var content;
 
-    var content = fs.readFileSync(product_id+'.json').toString();
+    try {
+        content = fs.readFileSync(product_id+'.json').toString();
+    }
+    catch (err) {
+        res.status(400);
+        res.send('You must first call the service Transform');
+        console.error( err )
+    }
+
     MongoClient.connect(mongoUrl, function(err, db) {
         if (err) throw err;
         var myquery = { id: product_id };
