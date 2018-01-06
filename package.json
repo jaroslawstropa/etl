@@ -4,6 +4,7 @@
   "description": "Project with ETL based on Ceneo",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./server/js/scrapper.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
     "fs": "0.0.1-security",
     "mongodb": "^3.0.1",
     "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.8"
   }
 }
