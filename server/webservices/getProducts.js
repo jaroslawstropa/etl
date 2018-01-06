@@ -1,5 +1,5 @@
 function addGetProductsWebService() {
-    app.get('/elo', function(req, res){
+    app.get('/', function(req, res){
         var response = '';
 
         MongoClient.connect(mongoUrl, function(err, db) {

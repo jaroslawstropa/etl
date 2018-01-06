@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 var app     = express();
 var MongoClient = require('mongodb').MongoClient;
 var mongoUrl = "mongodb://localhost:27017/mydb";
-require('./getProducts.js');
+require('../webservices/getProducts.js');
 
 
 //addGetProductsWebService();
