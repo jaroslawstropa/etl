@@ -196,9 +196,11 @@ app.post('/transform', function(req, res){
 app.post('/load', function(req, res){
     var product_id = req.param('id');
     var content;
+    var json;
 
     try {
         content = fs.readFileSync(product_id+'.json').toString();
+        json = JSON.parse(content);
     }
     catch (err) {
         res.status(400);
@@ -209,7 +211,7 @@ app.post('/load', function(req, res){
     MongoClient.connect(mongoUrl, function(err, db) {
         if (err) throw err;
         var myquery = { id: product_id };
-        var newvalues = { $set: content };
+        var newvalues = { $set: json };
         var dbase = db.db("mydb"); //here
         dbase.collection("products").updateOne(myquery, newvalues, { upsert: true } , function(err, res) {
             if (err) throw err;
