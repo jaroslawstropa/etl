@@ -5,7 +5,8 @@ var cheerio = require('cheerio');
 var app     = express();
 var MongoClient = require('mongodb').MongoClient;
 var mongoUrl = "mongodb://localhost:27017/mydb";
-require('../webservices/getProducts.js');
+var deleteProductsMongo = require('../database/deleteAllProducts.js');
+var webServiceGetProducts = require('../webservices/getProducts.js');
 
 
 //addGetProductsWebService();
@@ -98,27 +99,7 @@ app.post('/etl', function(req, res){
     }) ;
 });
 
-app.get('/', function(req, res){
-    var response = '';
-
-    MongoClient.connect(mongoUrl, function(err, db) {
-        if (err) throw err;
-        var mysort = { name: -1 };
-        var dbase = db.db("mydb"); //here
-        dbase.collection("products").find().sort(mysort).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            response = result;
-            db.close();
-            fs.writeFile('output.json', JSON.stringify(response, null, 4), function(err){
-                console.log('File successfully written! - Check your project directory for the output.json file');
-            });
-
-            res.send(response)
-        });
-
-    });
-});
+webServiceGetProducts.webServiceGetProducts();
 
 app.post('/extract', function(req, res){
     var product_id = req.param('id');
@@ -220,6 +201,10 @@ app.post('/load', function(req, res){
     });
 
     res.send(content);
+});
+
+app.post('/clear', function(req, res){
+    deleteProductsMongo.deleteAllProducts();
 });
 
 app.listen('8081');
