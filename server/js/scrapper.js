@@ -197,6 +197,8 @@ app.post('/load', function(req, res){
             if (err) throw err;
             console.log("Number of documents inserted: " + res.insertedCount);
             db.close();
+            fs.unlink(product_id+'.html');
+            fs.unlink(product_id+'.json');
         });
     });
 
