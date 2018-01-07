@@ -271,6 +271,8 @@ app.post('/load', function(req, res){
 
 app.post('/clear', function(req, res){
     deleteProductsMongo.deleteAllProducts();
+  res.status(200);
+  res.send('DB cleared');
 });
 
 app.listen('8081');
